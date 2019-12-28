@@ -1,2 +1,6 @@
 options:
   auto-update: true
+
+rubber-chance:
+  standard: 12
+  reinforced: 24

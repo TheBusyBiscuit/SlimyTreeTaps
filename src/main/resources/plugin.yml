@@ -1,10 +1,10 @@
-name: SlimefunAddon
+name: SlimyTreeTaps
 version: ${project.version}
-author: CHANGEME
-description: A generic Slimefun-Addon
-website: https://github.com/TheBusyBiscuit/Slimefun4-Addon
+author: TheBusyBiscuit
+description: A Slimefun4 Addon that adds an alternative way of getting plastic - Through rubber from trees.
+website: https://github.com/TheBusyBiscuit/SlimyTreeTaps
 
-main: me.CHANGEME.slimefunaddon.SlimefunAddon
+main: io.github.thebusybiscuit.slimytreetaps.TreeTaps
 depend: [Slimefun]
 
 api-version: 1.14
