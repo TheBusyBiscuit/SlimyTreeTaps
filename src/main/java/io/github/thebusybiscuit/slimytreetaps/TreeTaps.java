@@ -11,7 +11,9 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.Objects.Research;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
@@ -30,8 +32,10 @@ public class TreeTaps extends JavaPlugin {
 		
 		new Metrics(this);
 		
-		SlimefunItemStack treeTap = new SlimefunItemStack("TREE_TAP", Material.WOODEN_HOE, "&6Tree Tap", "", "&eRight Click a Log &7to harvest Rubber");
-		SlimefunItemStack reinforcedTreeTap = new SlimefunItemStack("REINFORCED_TREE_TAP", Material.IRON_HOE, "&6Reinforced Tree Tap", "", "&eRight Click a Log &7to harvest Rubber");
+		SlimefunItemStack treeTap = new SlimefunItemStack("TREE_TAP", Material.WOODEN_HOE, "&6Tree Tap", getLore(cfg.getInt("rubber-chance.standard")));
+		SlimefunItemStack reinforcedTreeTap = new SlimefunItemStack("REINFORCED_TREE_TAP", Material.IRON_HOE, "&6Reinforced Tree Tap", getLore(cfg.getInt("rubber-chance.reinforced")));
+		SlimefunItemStack diamondTreeTap = new SlimefunItemStack("DIAMOND_TREE_TAP", Material.DIAMOND_HOE, "&bDiamond Tree Tap", getLore(cfg.getInt("rubber-chance.diamond")));
+		
 		SlimefunItemStack rubber = new SlimefunItemStack("RUBBER", Material.FIREWORK_STAR, "&eRubber", "", "&7An alternative source of plastic");
 		SlimefunItemStack rawPlastic = new SlimefunItemStack("RAW_PLASTIC", Material.PAPER, "&rRaw Plastic");
 		SlimefunItemStack rubberFactory = new SlimefunItemStack("RUBBER_FACTORY", Material.SMOKER, "&bRubber Factory", "", MachineTier.ADVANCED.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &712 J/s");
@@ -54,6 +58,13 @@ public class TreeTaps extends JavaPlugin {
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.COBALT_INGOT
 		}).register();
 		
+		new TreeTap(category, diamondTreeTap, cfg.getInt("rubber-chance.diamond"), rubber,
+		new ItemStack[] {
+				null, new ItemStack(Material.DIAMOND), new ItemStack(Material.OAK_LOG),
+				new ItemStack(Material.DIAMOND), reinforcedTreeTap, null,
+				new ItemStack(Material.OAK_LOG), null, SlimefunItems.CARBONADO
+		}).register();
+		
 		new SlimefunItem(category, rubber, new RecipeType(treeTap),
 		new ItemStack[] {
 				null, null, null,
@@ -70,8 +81,8 @@ public class TreeTaps extends JavaPlugin {
 			
 			@Override
 			public void registerDefaultRecipes() {
-				registerRecipe(8, new ItemStack[] {new CustomItem(rubber, 2)}, new ItemStack[] {rawPlastic});
-				registerRecipe(8, new ItemStack[] {rawPlastic}, new ItemStack[] {SlimefunItems.PLASTIC_SHEET});
+				registerRecipe(6, new ItemStack[] {new CustomItem(rubber, 2)}, new ItemStack[] {rawPlastic});
+				registerRecipe(10, new ItemStack[] {rawPlastic}, new ItemStack[] {SlimefunItems.PLASTIC_SHEET});
 			}
 
 			@Override
@@ -92,6 +103,16 @@ public class TreeTaps extends JavaPlugin {
 				null, new CustomItem(rubber, 2), null,
 				null, null, null
 		}).register();
+		
+		Slimefun.registerResearch(new Research(6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, rubber, rawPlastic, rubberFactory);
+	}
+
+	private String[] getLore(int chance) {
+		return new String[] {
+				"", 
+				"&7Chance: &a" + chance + "%", 
+				"&eRight Click a Log &7to harvest Rubber"
+		};
 	}
 
 	private void clearAttributes(SlimefunItemStack... items) {

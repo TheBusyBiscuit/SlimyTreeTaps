@@ -15,6 +15,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.DamageableItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.NotPlaceable;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemInteractionHandler;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
@@ -63,7 +64,10 @@ public class TreeTap extends SimpleSlimefunItem<ItemInteractionHandler> implemen
 	}
 
 	private boolean isLog(Block b) {
-		return b != null && MaterialCollections.getAllLogs().contains(b.getType()) && !b.getType().name().startsWith("STRIPPED_");
+		return b != null 
+				&& MaterialCollections.getAllLogs().contains(b.getType()) 
+				&& !b.getType().name().startsWith("STRIPPED_")
+				&& !BlockStorage.hasBlockInfo(b.getLocation());
 	}
 
 	@Override
