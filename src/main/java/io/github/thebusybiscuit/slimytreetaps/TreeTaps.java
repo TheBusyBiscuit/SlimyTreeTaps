@@ -40,7 +40,7 @@ public class TreeTaps extends JavaPlugin {
 		SlimefunItemStack rawPlastic = new SlimefunItemStack("RAW_PLASTIC", Material.PAPER, "&rRaw Plastic");
 		SlimefunItemStack rubberFactory = new SlimefunItemStack("RUBBER_FACTORY", Material.SMOKER, "&bRubber Factory", "", MachineTier.ADVANCED.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &712 J/s");
 		
-		clearAttributes(treeTap, reinforcedTreeTap);
+		clearAttributes(treeTap, reinforcedTreeTap, diamondTreeTap);
 		
 		Category category = new Category(new CustomItem(treeTap, "&6Slimy TreeTaps", "", "&a> Click to open"));
 		
