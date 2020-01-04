@@ -27,7 +27,7 @@ public class TreeTaps extends JavaPlugin {
 		Config cfg = new Config(this);
 		
 		if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
-			new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/SlimyTreeTaps");
+			new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/SlimyTreeTaps").start();
 		}
 		
 		new Metrics(this);
