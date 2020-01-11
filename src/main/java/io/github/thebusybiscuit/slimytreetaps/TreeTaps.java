@@ -35,7 +35,8 @@ public class TreeTaps extends JavaPlugin {
 		SlimefunItemStack treeTap = new SlimefunItemStack("TREE_TAP", Material.WOODEN_HOE, "&6Tree Tap", getLore(cfg.getInt("rubber-chance.standard")));
 		SlimefunItemStack reinforcedTreeTap = new SlimefunItemStack("REINFORCED_TREE_TAP", Material.IRON_HOE, "&6Reinforced Tree Tap", getLore(cfg.getInt("rubber-chance.reinforced")));
 		SlimefunItemStack diamondTreeTap = new SlimefunItemStack("DIAMOND_TREE_TAP", Material.DIAMOND_HOE, "&bDiamond Tree Tap", getLore(cfg.getInt("rubber-chance.diamond")));
-		
+
+		SlimefunItemStack stickyResin = new SlimefunItemStack("STICKY_RESIN", Material.BROWN_DYE, "&6Sticky Resin", "", "&7Can be smelted into Rubber");
 		SlimefunItemStack rubber = new SlimefunItemStack("RUBBER", Material.FIREWORK_STAR, "&eRubber", "", "&7An alternative source of plastic");
 		SlimefunItemStack rawPlastic = new SlimefunItemStack("RAW_PLASTIC", Material.PAPER, "&rRaw Plastic");
 		SlimefunItemStack rubberFactory = new SlimefunItemStack("RUBBER_FACTORY", Material.SMOKER, "&bRubber Factory", "", MachineTier.ADVANCED.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &712 J/s");
@@ -44,28 +45,28 @@ public class TreeTaps extends JavaPlugin {
 		
 		Category category = new Category(new CustomItem(treeTap, "&6Slimy TreeTaps", "", "&a> Click to open"));
 		
-		new TreeTap(category, treeTap, cfg.getInt("rubber-chance.standard"), rubber,
+		new TreeTap(category, treeTap, cfg.getInt("rubber-chance.standard"), stickyResin,
 		new ItemStack[] {
 				null, SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG),
 				SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG), null,
 				new ItemStack(Material.OAK_LOG), null, new ItemStack(Material.BOWL)
 		}).register();
 		
-		new TreeTap(category, reinforcedTreeTap, cfg.getInt("rubber-chance.reinforced"), rubber,
+		new TreeTap(category, reinforcedTreeTap, cfg.getInt("rubber-chance.reinforced"), stickyResin,
 		new ItemStack[] {
 				null, SlimefunItems.HARDENED_METAL_INGOT, new ItemStack(Material.OAK_LOG),
 				SlimefunItems.HARDENED_METAL_INGOT, treeTap, null,
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.COBALT_INGOT
 		}).register();
 		
-		new TreeTap(category, diamondTreeTap, cfg.getInt("rubber-chance.diamond"), rubber,
+		new TreeTap(category, diamondTreeTap, cfg.getInt("rubber-chance.diamond"), stickyResin,
 		new ItemStack[] {
 				null, new ItemStack(Material.DIAMOND), new ItemStack(Material.OAK_LOG),
 				new ItemStack(Material.DIAMOND), reinforcedTreeTap, null,
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.CARBONADO
 		}).register();
 		
-		new SlimefunItem(category, rubber, new RecipeType(treeTap),
+		new SlimefunItem(category, stickyResin, new RecipeType(treeTap),
 		new ItemStack[] {
 				null, null, null,
 				null, new ItemStack(Material.OAK_LOG), null,
@@ -81,6 +82,7 @@ public class TreeTaps extends JavaPlugin {
 			
 			@Override
 			public void registerDefaultRecipes() {
+				registerRecipe(6, new ItemStack[] { new CustomItem(stickyResin, 2)}, new ItemStack[] {rubber});
 				registerRecipe(6, new ItemStack[] {new CustomItem(rubber, 2)}, new ItemStack[] {rawPlastic});
 				registerRecipe(10, new ItemStack[] {rawPlastic}, new ItemStack[] {SlimefunItems.PLASTIC_SHEET});
 			}
@@ -103,8 +105,15 @@ public class TreeTaps extends JavaPlugin {
 				null, new CustomItem(rubber, 2), null,
 				null, null, null
 		}).register();
-		
-		Slimefun.registerResearch(new Research(6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, rubber, rawPlastic, rubberFactory);
+
+		new SlimefunItem(category, rubber, new RecipeType(rubberFactory),
+			new ItemStack[] {
+				null, null, null,
+				null, new CustomItem(stickyResin), null,
+				null, null, null
+			}).register();
+
+		Slimefun.registerResearch(new Research(6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, stickyResin, rubber, rawPlastic, rubberFactory);
 	}
 
 	private String[] getLore(int chance) {
