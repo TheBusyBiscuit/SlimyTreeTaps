@@ -110,7 +110,7 @@ public class TreeTaps extends JavaPlugin {
 			@Override
 			public void registerDefaultRecipes() {
 				for (Material log : Tag.LOGS.getValues()) {
-					registerRecipe(14, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {rubber});
+					if (!log.name().startsWith("STRIPPED_")) registerRecipe(14, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {rubber});
 				}
 			}
 
@@ -136,7 +136,7 @@ public class TreeTaps extends JavaPlugin {
 			@Override
 			public void registerDefaultRecipes() {
 				for (Material log : Tag.LOGS.getValues()) {
-					registerRecipe(6, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {rubber});
+					if (!log.name().startsWith("STRIPPED_")) registerRecipe(6, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {rubber});
 				}
 			}
 
