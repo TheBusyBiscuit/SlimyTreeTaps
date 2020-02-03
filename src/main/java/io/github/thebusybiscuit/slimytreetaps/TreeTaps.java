@@ -1,6 +1,7 @@
 package io.github.thebusybiscuit.slimytreetaps;
 
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -39,6 +40,8 @@ public class TreeTaps extends JavaPlugin {
 		SlimefunItemStack rubber = new SlimefunItemStack("RUBBER", Material.FIREWORK_STAR, "&eRubber", "", "&7An alternative source of plastic");
 		SlimefunItemStack rawPlastic = new SlimefunItemStack("RAW_PLASTIC", Material.PAPER, "&rRaw Plastic");
 		SlimefunItemStack rubberFactory = new SlimefunItemStack("RUBBER_FACTORY", Material.SMOKER, "&bRubber Factory", "", MachineTier.ADVANCED.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &712 J/s");
+		SlimefunItemStack rubberExtractor = new SlimefunItemStack("RUBBER_EXTRACTOR", Material.SMITHING_TABLE, "&cRubber Extractor", "", MachineTier.END_GAME.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &732 J/s");
+		SlimefunItemStack rubberExtractor2 = new SlimefunItemStack("RUBBER_EXTRACTOR_2", Material.SMITHING_TABLE, "&cRubber Extractor &7(&eII&7)", "", MachineTier.END_GAME.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 2x", "&8\u21E8 &e\u26A1 &756 J/s");
 		
 		clearAttributes(treeTap, reinforcedTreeTap, diamondTreeTap);
 		
@@ -97,6 +100,58 @@ public class TreeTaps extends JavaPlugin {
 			
 		}.registerChargeableBlock(256);
 		
+		new RubberExtractor(category, rubberExtractor, RecipeType.ENHANCED_CRAFTING_TABLE,
+		new ItemStack[] {
+				null, diamondTreeTap, null,
+				SlimefunItems.GOLD_24K, SlimefunItems.CARBONADO, SlimefunItems.GOLD_24K,
+				SlimefunItems.ELECTRIC_MOTOR, rubberFactory, SlimefunItems.ELECTRIC_MOTOR
+		}) {
+			
+			@Override
+			public void registerDefaultRecipes() {
+				for (Material log : Tag.LOGS.getValues()) {
+					registerRecipe(14, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {rubber});
+				}
+			}
+
+			@Override
+			public int getEnergyConsumption() {
+				return 16;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 1;
+			}
+			
+		}.registerChargeableBlock(1024);
+		
+		new RubberExtractor(category, rubberExtractor2, RecipeType.ENHANCED_CRAFTING_TABLE,
+		new ItemStack[] {
+				SlimefunItems.REINFORCED_ALLOY_INGOT, diamondTreeTap, SlimefunItems.REINFORCED_ALLOY_INGOT,
+				SlimefunItems.GOLD_24K, SlimefunItems.CARBONADO, SlimefunItems.GOLD_24K,
+				SlimefunItems.ELECTRIC_MOTOR, rubberExtractor, SlimefunItems.ELECTRIC_MOTOR
+		}) {
+			
+			@Override
+			public void registerDefaultRecipes() {
+				for (Material log : Tag.LOGS.getValues()) {
+					registerRecipe(6, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {rubber});
+				}
+			}
+
+			@Override
+			public int getEnergyConsumption() {
+				return 28;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 2;
+			}
+			
+		}.registerChargeableBlock(2048);
+		
 		new SlimefunItem(category, rawPlastic, new RecipeType(rubberFactory),
 		new ItemStack[] {
 				null, null, null,
@@ -104,7 +159,8 @@ public class TreeTaps extends JavaPlugin {
 				null, null, null
 		}).register();
 		
-		Slimefun.registerResearch(new Research(6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, rubber, rawPlastic, rubberFactory);
+		Slimefun.registerResearch(new Research(6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, rubber, rawPlastic);
+		Slimefun.registerResearch(new Research(6790, "Automated Rubber", 20), rubberFactory, rubberExtractor, rubberExtractor2);
 	}
 
 	private String[] getLore(int chance) {
