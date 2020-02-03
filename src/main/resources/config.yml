@@ -1,7 +1,7 @@
 options:
   auto-update: true
 
-rubber-chance:
+resin-chance:
   standard: 12
   reinforced: 24
   diamond: 32

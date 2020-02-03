@@ -9,15 +9,15 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.RecipeDisplayItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-public abstract class RubberExtractor extends AContainer implements RecipeDisplayItem {
+public abstract class ResinExtractor extends AContainer implements RecipeDisplayItem {
 
-	public RubberExtractor(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+	public ResinExtractor(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
 		super(category, item, recipeType, recipe);
 	}
 
 	@Override
 	public String getInventoryTitle() {
-		return "Rubber Extractor";
+		return "Resin Extractor";
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public abstract class RubberExtractor extends AContainer implements RecipeDispla
 
 	@Override
 	public String getMachineIdentifier() {
-		return "RUBBER_EXTRACTOR";
+		return "RESIN_EXTRACTOR";
 	}
 
 }

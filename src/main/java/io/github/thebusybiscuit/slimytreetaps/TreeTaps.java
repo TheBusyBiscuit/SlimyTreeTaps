@@ -28,47 +28,48 @@ public class TreeTaps extends JavaPlugin {
 		Config cfg = new Config(this);
 		
 		if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
-			new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/SlimyTreeTaps/master");
+			new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/SlimyTreeTaps/master").start();
 		}
 		
 		new Metrics(this);
 		
-		SlimefunItemStack treeTap = new SlimefunItemStack("TREE_TAP", Material.WOODEN_HOE, "&6Tree Tap", getLore(cfg.getInt("rubber-chance.standard")));
-		SlimefunItemStack reinforcedTreeTap = new SlimefunItemStack("REINFORCED_TREE_TAP", Material.IRON_HOE, "&6Reinforced Tree Tap", getLore(cfg.getInt("rubber-chance.reinforced")));
-		SlimefunItemStack diamondTreeTap = new SlimefunItemStack("DIAMOND_TREE_TAP", Material.DIAMOND_HOE, "&bDiamond Tree Tap", getLore(cfg.getInt("rubber-chance.diamond")));
+		SlimefunItemStack treeTap = new SlimefunItemStack("TREE_TAP", Material.WOODEN_HOE, "&6Tree Tap", getLore(cfg.getInt("resin-chance.standard")));
+		SlimefunItemStack reinforcedTreeTap = new SlimefunItemStack("REINFORCED_TREE_TAP", Material.IRON_HOE, "&6Reinforced Tree Tap", getLore(cfg.getInt("resin-chance.reinforced")));
+		SlimefunItemStack diamondTreeTap = new SlimefunItemStack("DIAMOND_TREE_TAP", Material.DIAMOND_HOE, "&bDiamond Tree Tap", getLore(cfg.getInt("resin-chance.diamond")));
+
+		clearAttributes(treeTap, reinforcedTreeTap, diamondTreeTap);
 		
+		SlimefunItemStack stickyResin = new SlimefunItemStack("STICKY_RESIN", Material.BROWN_DYE, "&6Sticky Resin", "", "&7Can be smelted into Rubber");
 		SlimefunItemStack rubber = new SlimefunItemStack("RUBBER", Material.FIREWORK_STAR, "&eRubber", "", "&7An alternative source of plastic");
 		SlimefunItemStack rawPlastic = new SlimefunItemStack("RAW_PLASTIC", Material.PAPER, "&rRaw Plastic");
 		SlimefunItemStack rubberFactory = new SlimefunItemStack("RUBBER_FACTORY", Material.SMOKER, "&bRubber Factory", "", MachineTier.ADVANCED.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &712 J/s");
-		SlimefunItemStack rubberExtractor = new SlimefunItemStack("RUBBER_EXTRACTOR", Material.SMITHING_TABLE, "&cRubber Extractor", "", MachineTier.END_GAME.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &732 J/s");
-		SlimefunItemStack rubberExtractor2 = new SlimefunItemStack("RUBBER_EXTRACTOR_2", Material.SMITHING_TABLE, "&cRubber Extractor &7(&eII&7)", "", MachineTier.END_GAME.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 2x", "&8\u21E8 &e\u26A1 &756 J/s");
-		
-		clearAttributes(treeTap, reinforcedTreeTap, diamondTreeTap);
+		SlimefunItemStack resinExtractor = new SlimefunItemStack("RESIN_EXTRACTOR", Material.SMITHING_TABLE, "&cResin Extractor", "", MachineTier.END_GAME.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &732 J/s");
+		SlimefunItemStack resinExtractor2 = new SlimefunItemStack("RESIN_EXTRACTOR_2", Material.SMITHING_TABLE, "&cResin Extractor &7(&eII&7)", "", MachineTier.END_GAME.and(MachineType.MACHINE), "&8\u21E8 &7Speed: 2x", "&8\u21E8 &e\u26A1 &756 J/s");
 		
 		Category category = new Category(new CustomItem(treeTap, "&6Slimy TreeTaps", "", "&a> Click to open"));
 		
-		new TreeTap(category, treeTap, cfg.getInt("rubber-chance.standard"), rubber,
+		new TreeTap(category, treeTap, cfg.getInt("resin-chance.standard"), stickyResin,
 		new ItemStack[] {
 				null, SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG),
 				SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG), null,
 				new ItemStack(Material.OAK_LOG), null, new ItemStack(Material.BOWL)
 		}).register();
 		
-		new TreeTap(category, reinforcedTreeTap, cfg.getInt("rubber-chance.reinforced"), rubber,
+		new TreeTap(category, reinforcedTreeTap, cfg.getInt("resin-chance.reinforced"), stickyResin,
 		new ItemStack[] {
 				null, SlimefunItems.HARDENED_METAL_INGOT, new ItemStack(Material.OAK_LOG),
 				SlimefunItems.HARDENED_METAL_INGOT, treeTap, null,
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.COBALT_INGOT
 		}).register();
 		
-		new TreeTap(category, diamondTreeTap, cfg.getInt("rubber-chance.diamond"), rubber,
+		new TreeTap(category, diamondTreeTap, cfg.getInt("resin-chance.diamond"), stickyResin,
 		new ItemStack[] {
 				null, new ItemStack(Material.DIAMOND), new ItemStack(Material.OAK_LOG),
 				new ItemStack(Material.DIAMOND), reinforcedTreeTap, null,
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.CARBONADO
 		}).register();
 		
-		new SlimefunItem(category, rubber, new RecipeType(treeTap),
+		new SlimefunItem(category, stickyResin, new RecipeType(treeTap),
 		new ItemStack[] {
 				null, null, null,
 				null, new ItemStack(Material.OAK_LOG), null,
@@ -84,6 +85,7 @@ public class TreeTaps extends JavaPlugin {
 			
 			@Override
 			public void registerDefaultRecipes() {
+				registerRecipe(4, new ItemStack[] {new CustomItem(stickyResin, 2)}, new ItemStack[] {rubber});
 				registerRecipe(6, new ItemStack[] {new CustomItem(rubber, 2)}, new ItemStack[] {rawPlastic});
 				registerRecipe(10, new ItemStack[] {rawPlastic}, new ItemStack[] {SlimefunItems.PLASTIC_SHEET});
 			}
@@ -100,7 +102,7 @@ public class TreeTaps extends JavaPlugin {
 			
 		}.registerChargeableBlock(256);
 		
-		new RubberExtractor(category, rubberExtractor, RecipeType.ENHANCED_CRAFTING_TABLE,
+		new ResinExtractor(category, resinExtractor, RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {
 				null, diamondTreeTap, null,
 				SlimefunItems.GOLD_24K, SlimefunItems.CARBONADO, SlimefunItems.GOLD_24K,
@@ -110,7 +112,9 @@ public class TreeTaps extends JavaPlugin {
 			@Override
 			public void registerDefaultRecipes() {
 				for (Material log : Tag.LOGS.getValues()) {
-					if (!log.name().startsWith("STRIPPED_")) registerRecipe(14, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {rubber});
+					if (!log.name().startsWith("STRIPPED_")) {
+						registerRecipe(14, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {stickyResin});
+					}
 				}
 			}
 
@@ -126,17 +130,19 @@ public class TreeTaps extends JavaPlugin {
 			
 		}.registerChargeableBlock(1024);
 		
-		new RubberExtractor(category, rubberExtractor2, RecipeType.ENHANCED_CRAFTING_TABLE,
+		new ResinExtractor(category, resinExtractor2, RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {
 				SlimefunItems.REINFORCED_ALLOY_INGOT, diamondTreeTap, SlimefunItems.REINFORCED_ALLOY_INGOT,
 				SlimefunItems.GOLD_24K, SlimefunItems.CARBONADO, SlimefunItems.GOLD_24K,
-				SlimefunItems.ELECTRIC_MOTOR, rubberExtractor, SlimefunItems.ELECTRIC_MOTOR
+				SlimefunItems.ELECTRIC_MOTOR, resinExtractor, SlimefunItems.ELECTRIC_MOTOR
 		}) {
 			
 			@Override
 			public void registerDefaultRecipes() {
 				for (Material log : Tag.LOGS.getValues()) {
-					if (!log.name().startsWith("STRIPPED_")) registerRecipe(6, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {rubber});
+					if (!log.name().startsWith("STRIPPED_")) {
+						registerRecipe(6, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {stickyResin});
+					}
 				}
 			}
 
@@ -158,16 +164,23 @@ public class TreeTaps extends JavaPlugin {
 				null, new CustomItem(rubber, 2), null,
 				null, null, null
 		}).register();
-		
-		Slimefun.registerResearch(new Research(6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, rubber, rawPlastic);
-		Slimefun.registerResearch(new Research(6790, "Automated Rubber", 20), rubberFactory, rubberExtractor, rubberExtractor2);
+
+		new SlimefunItem(category, rubber, new RecipeType(rubberFactory),
+			new ItemStack[] {
+				null, null, null,
+				null, new CustomItem(stickyResin), null,
+				null, null, null
+			}).register();
+
+		Slimefun.registerResearch(new Research(6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, stickyResin, rubber, rawPlastic);
+		Slimefun.registerResearch(new Research(6790, "Automated Rubber", 20), rubberFactory, resinExtractor, resinExtractor2);
 	}
 
 	private String[] getLore(int chance) {
 		return new String[] {
 				"", 
 				"&7Chance: &a" + chance + "%", 
-				"&eRight Click a Log &7to harvest Rubber"
+				"&eRight Click any Log &7to harvest Resin"
 		};
 	}
 
