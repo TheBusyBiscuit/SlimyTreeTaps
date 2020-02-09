@@ -6,6 +6,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
@@ -14,13 +15,13 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.DamageableItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.NotPlaceable;
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemInteractionHandler;
+import me.mrCookieSlime.Slimefun.Objects.handlers.ItemUseHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 
-public class TreeTap extends SimpleSlimefunItem<ItemInteractionHandler> implements NotPlaceable, DamageableItem {
+public class TreeTap extends SimpleSlimefunItem<ItemUseHandler> implements NotPlaceable, DamageableItem {
 
 	private final int chance;
 	private final SlimefunItemStack output;
@@ -38,10 +39,11 @@ public class TreeTap extends SimpleSlimefunItem<ItemInteractionHandler> implemen
 	}
 
 	@Override
-	public ItemInteractionHandler getItemHandler() {
-		return (e, p, item) -> {
-			if (isItem(item)) {
-				Block b = e.getClickedBlock();
+	public ItemUseHandler getItemHandler() {
+		return e -> {
+			if (e.getClickedBlock().isPresent()) {
+				Player p = e.getPlayer();
+				Block b = e.getClickedBlock().get();
 				
 				if (isLog(b) && SlimefunPlugin.getProtectionManager().hasPermission(p, b, ProtectableAction.BREAK_BLOCK)) {
 					p.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
@@ -49,17 +51,13 @@ public class TreeTap extends SimpleSlimefunItem<ItemInteractionHandler> implemen
 					if (ThreadLocalRandom.current().nextInt(100) < chance) {
 						b.setType(Material.valueOf("STRIPPED_" + b.getType().name()));
 						
-						Location l = b.getRelative(e.getParentEvent().getBlockFace()).getLocation().add(0.5, 0.5, 0.5);
+						Location l = b.getRelative(e.getClickedFace()).getLocation().add(0.5, 0.5, 0.5);
 						b.getWorld().dropItem(l, output.clone());
 					}
 					
-					damageItem(p, item);
+					damageItem(p, e.getItem());
 				}
-				
-				return true;
 			}
-			
-			return false;
 		};
 	}
 
