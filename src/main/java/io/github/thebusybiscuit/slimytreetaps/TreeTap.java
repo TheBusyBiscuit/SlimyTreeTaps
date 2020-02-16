@@ -32,11 +32,6 @@ public class TreeTap extends SimpleSlimefunItem<ItemUseHandler> implements NotPl
 		this.chance = chance;
 		this.output = output;
 	}
-	
-	@Override
-	protected boolean areItemHandlersPrivate() {
-		return true;
-	}
 
 	@Override
 	public ItemUseHandler getItemHandler() {

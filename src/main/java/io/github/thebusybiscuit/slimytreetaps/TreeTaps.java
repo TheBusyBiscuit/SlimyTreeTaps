@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
@@ -23,7 +24,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 
-public class TreeTaps extends JavaPlugin {
+public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 	
 	@Override
 	public void onEnable() {
@@ -55,28 +56,28 @@ public class TreeTaps extends JavaPlugin {
 				null, SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG),
 				SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG), null,
 				new ItemStack(Material.OAK_LOG), null, new ItemStack(Material.BOWL)
-		}).register();
+		}).register(this);
 		
 		new TreeTap(category, reinforcedTreeTap, cfg.getInt("resin-chance.reinforced"), stickyResin,
 		new ItemStack[] {
 				null, SlimefunItems.HARDENED_METAL_INGOT, new ItemStack(Material.OAK_LOG),
 				SlimefunItems.HARDENED_METAL_INGOT, treeTap, null,
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.COBALT_INGOT
-		}).register();
+		}).register(this);
 		
 		new TreeTap(category, diamondTreeTap, cfg.getInt("resin-chance.diamond"), stickyResin,
 		new ItemStack[] {
 				null, new ItemStack(Material.DIAMOND), new ItemStack(Material.OAK_LOG),
 				new ItemStack(Material.DIAMOND), reinforcedTreeTap, null,
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.CARBONADO
-		}).register();
+		}).register(this);
 		
 		new SlimefunItem(category, stickyResin, new RecipeType(treeTap),
 		new ItemStack[] {
 				null, null, null,
 				null, new ItemStack(Material.OAK_LOG), null,
 				null, null, null
-		}).register();
+		}).register(this);
 		
 		new RubberFactory(category, rubberFactory, RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {
@@ -165,14 +166,14 @@ public class TreeTaps extends JavaPlugin {
 				null, null, null,
 				null, new CustomItem(rubber, 2), null,
 				null, null, null
-		}).register();
+		}).register(this);
 
 		new SlimefunItem(category, rubber, new RecipeType(rubberFactory),
-			new ItemStack[] {
+		new ItemStack[] {
 				null, null, null,
 				null, new CustomItem(stickyResin), null,
 				null, null, null
-			}).register();
+		}).register(this);
 
 		Slimefun.registerResearch(new Research(new NamespacedKey(this, "tree_taps"), 6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, stickyResin, rubber, rawPlastic);
 		Slimefun.registerResearch(new Research(new NamespacedKey(this, "rubber_automation"), 6790, "Automated Rubber", 20), rubberFactory, resinExtractor, resinExtractor2);
@@ -192,6 +193,16 @@ public class TreeTaps extends JavaPlugin {
 			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 			item.setItemMeta(meta);
 		}
+	}
+
+	@Override
+	public String getBugTrackerURL() {
+		return "https://github.com/TheBusyBiscuit/Slimytreetaps/issues";
+	}
+
+	@Override
+	public JavaPlugin getJavaPlugin() {
+		return this;
 	}
 
 }
