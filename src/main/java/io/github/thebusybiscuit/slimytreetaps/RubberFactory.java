@@ -11,23 +11,28 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 public abstract class RubberFactory extends AContainer implements RecipeDisplayItem {
 
-	public RubberFactory(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-		super(category, item, recipeType, recipe);
-	}
+    public RubberFactory(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+        super(category, item, recipeType, recipe);
+    }
 
-	@Override
-	public String getInventoryTitle() {
-		return "Rubber Factory";
-	}
+    @Override
+    public String getInventoryTitle() {
+        return "Rubber Factory";
+    }
 
-	@Override
-	public ItemStack getProgressBar() {
-		return new ItemStack(Material.FLINT_AND_STEEL);
-	}
+    @Override
+    public ItemStack getProgressBar() {
+        return new ItemStack(Material.FLINT_AND_STEEL);
+    }
 
-	@Override
-	public String getMachineIdentifier() {
-		return "RUBBER_FACTORY";
-	}
+    @Override
+    public String getMachineIdentifier() {
+        return "RUBBER_FACTORY";
+    }
+
+    @Override
+    public int getCapacity() {
+        return 256;
+    }
 
 }

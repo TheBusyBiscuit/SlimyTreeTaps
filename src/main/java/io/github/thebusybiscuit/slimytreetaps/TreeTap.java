@@ -23,49 +23,46 @@ import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 
 public class TreeTap extends SimpleSlimefunItem<ItemUseHandler> implements NotPlaceable, DamageableItem {
 
-	private final int chance;
-	private final SlimefunItemStack output;
-	
-	public TreeTap(Category category, SlimefunItemStack item, int chance, SlimefunItemStack output, ItemStack[] recipe) {
-		super(category, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
-		
-		this.chance = chance;
-		this.output = output;
-	}
+    private final int chance;
+    private final SlimefunItemStack output;
 
-	@Override
-	public ItemUseHandler getItemHandler() {
-		return e -> {
-			if (e.getClickedBlock().isPresent()) {
-				Player p = e.getPlayer();
-				Block b = e.getClickedBlock().get();
-				
-				if (isLog(b) && SlimefunPlugin.getProtectionManager().hasPermission(p, b, ProtectableAction.BREAK_BLOCK)) {
-					p.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
-					
-					if (ThreadLocalRandom.current().nextInt(100) < chance) {
-						b.setType(Material.valueOf("STRIPPED_" + b.getType().name()));
-						
-						Location l = b.getRelative(e.getClickedFace()).getLocation().add(0.5, 0.5, 0.5);
-						b.getWorld().dropItem(l, output.clone());
-					}
-					
-					damageItem(p, e.getItem());
-				}
-			}
-		};
-	}
+    public TreeTap(Category category, SlimefunItemStack item, int chance, SlimefunItemStack output, ItemStack[] recipe) {
+        super(category, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
 
-	private boolean isLog(Block b) {
-		return b != null 
-				&& MaterialCollections.getAllLogs().contains(b.getType()) 
-				&& !b.getType().name().startsWith("STRIPPED_")
-				&& !BlockStorage.hasBlockInfo(b.getLocation());
-	}
+        this.chance = chance;
+        this.output = output;
+    }
 
-	@Override
-	public boolean isDamageable() {
-		return true;
-	}
+    @Override
+    public ItemUseHandler getItemHandler() {
+        return e -> {
+            if (e.getClickedBlock().isPresent()) {
+                Player p = e.getPlayer();
+                Block b = e.getClickedBlock().get();
+
+                if (isLog(b) && SlimefunPlugin.getProtectionManager().hasPermission(p, b, ProtectableAction.BREAK_BLOCK)) {
+                    p.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
+
+                    if (ThreadLocalRandom.current().nextInt(100) < chance) {
+                        b.setType(Material.valueOf("STRIPPED_" + b.getType().name()));
+
+                        Location l = b.getRelative(e.getClickedFace()).getLocation().add(0.5, 0.5, 0.5);
+                        b.getWorld().dropItem(l, output.clone());
+                    }
+
+                    damageItem(p, e.getItem());
+                }
+            }
+        };
+    }
+
+    private boolean isLog(Block b) {
+        return b != null && MaterialCollections.getAllLogs().contains(b.getType()) && !b.getType().name().startsWith("STRIPPED_") && !BlockStorage.hasBlockInfo(b.getLocation());
+    }
+
+    @Override
+    public boolean isDamageable() {
+        return true;
+    }
 
 }

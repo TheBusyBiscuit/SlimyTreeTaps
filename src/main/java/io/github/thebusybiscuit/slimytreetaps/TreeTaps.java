@@ -103,7 +103,7 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 				return 1;
 			}
 			
-		}.registerChargeableBlock(256);
+		}.register(this);
 		
 		new ResinExtractor(category, resinExtractor, RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {
@@ -130,8 +130,13 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 			public int getSpeed() {
 				return 1;
 			}
+
+            @Override
+			public int getCapacity() {
+			    return 1024;
+			}
 			
-		}.registerChargeableBlock(1024);
+		}.register(this);
 		
 		new ResinExtractor(category, resinExtractor2, RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {
@@ -158,8 +163,13 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 			public int getSpeed() {
 				return 2;
 			}
+
+            @Override
+            public int getCapacity() {
+                return 2048;
+            }
 			
-		}.registerChargeableBlock(2048);
+		}.register(this);
 		
 		new SlimefunItem(category, rawPlastic, new RecipeType(rubberFactory),
 		new ItemStack[] {
