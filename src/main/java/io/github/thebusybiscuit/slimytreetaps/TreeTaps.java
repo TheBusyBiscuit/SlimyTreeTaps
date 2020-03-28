@@ -72,7 +72,7 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.CARBONADO
 		}).register(this);
 		
-		new SlimefunItem(category, stickyResin, new RecipeType(treeTap),
+		new SlimefunItem(category, stickyResin, new RecipeType(new NamespacedKey(this, "tree_tap"), treeTap),
 		new ItemStack[] {
 				null, null, null,
 				null, new ItemStack(Material.OAK_LOG), null,
@@ -171,14 +171,14 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 			
 		}.register(this);
 		
-		new SlimefunItem(category, rawPlastic, new RecipeType(rubberFactory),
+		new SlimefunItem(category, rawPlastic, new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory),
 		new ItemStack[] {
 				null, null, null,
 				null, new CustomItem(rubber, 2), null,
 				null, null, null
 		}).register(this);
 
-		new SlimefunItem(category, rubber, new RecipeType(rubberFactory),
+		new SlimefunItem(category, rubber, new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory),
 		new ItemStack[] {
 				null, null, null,
 				null, new CustomItem(stickyResin), null,
