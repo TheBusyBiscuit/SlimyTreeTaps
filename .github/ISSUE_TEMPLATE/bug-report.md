@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a Bug or an Issue with this Plugin.
+about: Report a Bug or an Issue with SlimyTreeTaps.
 title: ''
 labels: bug
 assignees: ''
@@ -30,4 +30,4 @@ assignees: ''
  - Minecraft Version:
  - CS-CoreLib Version:
  - Slimefun Version:
- - Plugin Version: 
+ - SlimyTreeTaps Version: 

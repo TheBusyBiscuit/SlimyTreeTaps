@@ -17,7 +17,6 @@ import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.Research;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
@@ -48,8 +47,10 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		SlimefunItemStack rubberFactory = new SlimefunItemStack("RUBBER_FACTORY", Material.SMOKER, "&bRubber Factory", "", LoreBuilder.machine(MachineTier.ADVANCED, MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &712 J/s");
 		SlimefunItemStack resinExtractor = new SlimefunItemStack("RESIN_EXTRACTOR", Material.SMITHING_TABLE, "&cResin Extractor", "", LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &732 J/s");
 		SlimefunItemStack resinExtractor2 = new SlimefunItemStack("RESIN_EXTRACTOR_2", Material.SMITHING_TABLE, "&cResin Extractor &7(&eII&7)", "", LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE), "&8\u21E8 &7Speed: 2x", "&8\u21E8 &e\u26A1 &756 J/s");
+		SlimefunItemStack amber = new SlimefunItemStack("AMBER", "ac7f7b72fc3e733828fcccc0ca8278aca2633aa33a231c93a682d14ac54aa0c4", "&6Amber", "", "&eA hardened gem acquired from Resin");
 		
 		Category category = new Category(new NamespacedKey(this, "tree_taps"), new CustomItem(treeTap, "&6Slimy TreeTaps", "", "&a> Click to open"));
+		RecipeType rubberFactoryType = new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory);
 		
 		new TreeTap(category, treeTap, cfg.getInt("resin-chance.standard"), stickyResin,
 		new ItemStack[] {
@@ -171,22 +172,34 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 			
 		}.register(this);
 		
-		new SlimefunItem(category, rawPlastic, new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory),
+		new SlimefunItem(category, rawPlastic, rubberFactoryType,
 		new ItemStack[] {
 				null, null, null,
 				null, new CustomItem(rubber, 2), null,
 				null, null, null
 		}).register(this);
 
-		new SlimefunItem(category, rubber, new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory),
+		new SlimefunItem(category, rubber, rubberFactoryType,
 		new ItemStack[] {
 				null, null, null,
-				null, new CustomItem(stickyResin), null,
+				null, stickyResin, null,
 				null, null, null
 		}).register(this);
 
-		Slimefun.registerResearch(new Research(new NamespacedKey(this, "tree_taps"), 6789, "Tree Taps", 15), treeTap, reinforcedTreeTap, diamondTreeTap, stickyResin, rubber, rawPlastic);
-		Slimefun.registerResearch(new Research(new NamespacedKey(this, "rubber_automation"), 6790, "Automated Rubber", 20), rubberFactory, resinExtractor, resinExtractor2);
+        new SlimefunItem(category, amber, RecipeType.HEATED_PRESSURE_CHAMBER,
+        new ItemStack[] {
+                new CustomItem(stickyResin, 4), null, null,
+                null, null, null,
+                null, null, null
+        }).register(this);
+
+        Research treeTapsResearch = new Research(new NamespacedKey(this, "tree_taps"), 6789, "Tree Taps", 15);
+		treeTapsResearch.addItems(SlimefunItem.getByItem(treeTap), SlimefunItem.getByItem(reinforcedTreeTap), SlimefunItem.getByItem(diamondTreeTap), SlimefunItem.getByItem(stickyResin), SlimefunItem.getByItem(rubber), SlimefunItem.getByItem(rawPlastic));
+		treeTapsResearch.register();
+
+		Research automationResearch = new Research(new NamespacedKey(this, "rubber_automation"), 6790, "Automated Rubber", 20);
+		automationResearch.addItems(SlimefunItem.getByItem(rubberFactory), SlimefunItem.getByItem(resinExtractor), SlimefunItem.getByItem(resinExtractor2));
+		automationResearch.register();
 	}
 
 	private String[] getLore(int chance) {
