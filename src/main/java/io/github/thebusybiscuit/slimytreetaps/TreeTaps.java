@@ -8,12 +8,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
+import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -48,7 +50,8 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		SlimefunItemStack resinExtractor = new SlimefunItemStack("RESIN_EXTRACTOR", Material.SMITHING_TABLE, "&cResin Extractor", "", LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &732 J/s");
 		SlimefunItemStack resinExtractor2 = new SlimefunItemStack("RESIN_EXTRACTOR_2", Material.SMITHING_TABLE, "&cResin Extractor &7(&eII&7)", "", LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE), "&8\u21E8 &7Speed: 2x", "&8\u21E8 &e\u26A1 &756 J/s");
 		SlimefunItemStack amber = new SlimefunItemStack("AMBER", "ac7f7b72fc3e733828fcccc0ca8278aca2633aa33a231c93a682d14ac54aa0c4", "&6Amber", "", "&eA hardened gem acquired from Resin");
-		
+		SlimefunItemStack amberBlock = new SlimefunItemStack("AMBER_BLOCK", SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16) ? Material.SHROOMLIGHT: Material.GLOWSTONE, "&6Block of Amber");
+        
 		Category category = new Category(new NamespacedKey(this, "tree_taps"), new CustomItem(treeTap, "&6Slimy TreeTaps", "", "&a> Click to open"));
 		RecipeType rubberFactoryType = new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory);
 		
@@ -193,13 +196,24 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
                 null, null, null
         }).register(this);
 
+        new SlimefunItem(category, amberBlock, RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[] {
+                amber, amber, amber,
+                amber, amber, amber,
+                amber, amber, amber
+        }).register(this);
+
         Research treeTapsResearch = new Research(new NamespacedKey(this, "tree_taps"), 6789, "Tree Taps", 15);
-		treeTapsResearch.addItems(SlimefunItem.getByItem(treeTap), SlimefunItem.getByItem(reinforcedTreeTap), SlimefunItem.getByItem(diamondTreeTap), SlimefunItem.getByItem(stickyResin), SlimefunItem.getByItem(rubber), SlimefunItem.getByItem(rawPlastic));
+		treeTapsResearch.addItems(treeTap, reinforcedTreeTap, diamondTreeTap, stickyResin, rubber, rawPlastic);
 		treeTapsResearch.register();
 
 		Research automationResearch = new Research(new NamespacedKey(this, "rubber_automation"), 6790, "Automated Rubber", 20);
-		automationResearch.addItems(SlimefunItem.getByItem(rubberFactory), SlimefunItem.getByItem(resinExtractor), SlimefunItem.getByItem(resinExtractor2));
+		automationResearch.addItems(rubberFactory, resinExtractor, resinExtractor2);
 		automationResearch.register();
+
+        Research amberResearch = new Research(new NamespacedKey(this, "rubber_automation"), 6790, "Automated Rubber", 20);
+        amberResearch.addItems(amber, amberBlock);
+        amberResearch.register();
 	}
 
 	private String[] getLore(int chance) {
