@@ -37,7 +37,7 @@
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
-                
+
                 <includes>
                     <include>*</include>
                 </includes>
@@ -78,9 +78,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.TheBusyBiscuit</groupId>
+            <groupId>com.github.Slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-14</version>
+            <version>RC-16</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

@@ -1,5 +1,7 @@
 options:
   auto-update: true
+  
+amber-chance: 16
 
 resin-chance:
   standard: 12

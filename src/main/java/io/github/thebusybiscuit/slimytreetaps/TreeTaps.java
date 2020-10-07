@@ -37,11 +37,12 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		
 		new Metrics(this, 6138);
 		
-		SlimefunItemStack treeTap = new SlimefunItemStack("TREE_TAP", Material.WOODEN_HOE, "&6Tree Tap", getLore(cfg.getInt("resin-chance.standard")));
-		SlimefunItemStack reinforcedTreeTap = new SlimefunItemStack("REINFORCED_TREE_TAP", Material.IRON_HOE, "&6Reinforced Tree Tap", getLore(cfg.getInt("resin-chance.reinforced")));
-		SlimefunItemStack diamondTreeTap = new SlimefunItemStack("DIAMOND_TREE_TAP", Material.DIAMOND_HOE, "&bDiamond Tree Tap", getLore(cfg.getInt("resin-chance.diamond")));
+		SlimefunItemStack treeTap = new SlimefunItemStack("TREE_TAP", Material.WOODEN_HOE, "&6Tree Tap", getLore("Resin", cfg.getInt("resin-chance.standard")));
+		SlimefunItemStack reinforcedTreeTap = new SlimefunItemStack("REINFORCED_TREE_TAP", Material.IRON_HOE, "&6Reinforced Tree Tap", getLore("Resin", cfg.getInt("resin-chance.reinforced")));
+		SlimefunItemStack diamondTreeTap = new SlimefunItemStack("DIAMOND_TREE_TAP", Material.DIAMOND_HOE, "&bDiamond Tree Tap", getLore("Resin", cfg.getInt("resin-chance.diamond")));
+		SlimefunItemStack treeScraper = new SlimefunItemStack("TREE_SCRAPER", Material.GOLDEN_SHOVEL, "&bTree Scraper", getLore("Amber", cfg.getInt("amber-chance")));
 
-		clearAttributes(treeTap, reinforcedTreeTap, diamondTreeTap);
+		clearAttributes(treeTap, reinforcedTreeTap, diamondTreeTap, treeScraper);
 		
 		SlimefunItemStack stickyResin = new SlimefunItemStack("STICKY_RESIN", Material.BROWN_DYE, "&6Sticky Resin", "", "&7Can be turned into Rubber");
 		SlimefunItemStack rubber = new SlimefunItemStack("RUBBER", Material.FIREWORK_STAR, "&eRubber", "", "&7An alternative source of plastic");
@@ -55,26 +56,33 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		Category category = new Category(new NamespacedKey(this, "tree_taps"), new CustomItem(treeTap, "&6Slimy TreeTaps", "", "&a> Click to open"));
 		RecipeType rubberFactoryType = new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory);
 		
-		new TreeTap(category, treeTap, cfg.getInt("resin-chance.standard"), stickyResin,
+		new TreeTool(category, treeTap, cfg.getInt("resin-chance.standard"), stickyResin,
 		new ItemStack[] {
 				null, SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG),
 				SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG), null,
 				new ItemStack(Material.OAK_LOG), null, new ItemStack(Material.BOWL)
 		}).register(this);
 		
-		new TreeTap(category, reinforcedTreeTap, cfg.getInt("resin-chance.reinforced"), stickyResin,
+		new TreeTool(category, reinforcedTreeTap, cfg.getInt("resin-chance.reinforced"), stickyResin,
 		new ItemStack[] {
 				null, SlimefunItems.HARDENED_METAL_INGOT, new ItemStack(Material.OAK_LOG),
 				SlimefunItems.HARDENED_METAL_INGOT, treeTap, null,
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.COBALT_INGOT
 		}).register(this);
 		
-		new TreeTap(category, diamondTreeTap, cfg.getInt("resin-chance.diamond"), stickyResin,
+		new TreeTool(category, diamondTreeTap, cfg.getInt("resin-chance.diamond"), stickyResin,
 		new ItemStack[] {
 				null, new ItemStack(Material.DIAMOND), new ItemStack(Material.OAK_LOG),
 				new ItemStack(Material.DIAMOND), reinforcedTreeTap, null,
 				new ItemStack(Material.OAK_LOG), null, SlimefunItems.CARBONADO
 		}).register(this);
+        
+        new TreeTool(category, treeScraper, cfg.getInt("amber-chance"), amber,
+        new ItemStack[] {
+                null, new ItemStack(Material.GOLD_INGOT), null,
+                new ItemStack(Material.GOLD_INGOT), treeTap, null,
+                null, null, SlimefunItems.BRONZE_INGOT
+        }).register(this);
 		
 		new SlimefunItem(category, stickyResin, new RecipeType(new NamespacedKey(this, "tree_tap"), treeTap),
 		new ItemStack[] {
@@ -211,16 +219,16 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		automationResearch.addItems(rubberFactory, resinExtractor, resinExtractor2);
 		automationResearch.register();
 
-        Research amberResearch = new Research(new NamespacedKey(this, "rubber_automation"), 6790, "Automated Rubber", 20);
-        amberResearch.addItems(amber, amberBlock);
+        Research amberResearch = new Research(new NamespacedKey(this, "amber"), 6791, "Amber", 20);
+        amberResearch.addItems(treeScraper, amber, amberBlock);
         amberResearch.register();
 	}
 
-	private String[] getLore(int chance) {
+	private String[] getLore(String item, int chance) {
 		return new String[] {
 				"", 
 				"&7Chance: &a" + chance + "%", 
-				"&eRight Click any Log &7to harvest Resin"
+				"&eRight Click any Log &7to harvest " + item
 		};
 	}
 

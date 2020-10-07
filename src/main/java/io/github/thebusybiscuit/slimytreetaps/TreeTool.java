@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,15 +19,14 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 
-public class TreeTap extends SimpleSlimefunItem<ItemUseHandler> implements NotPlaceable, DamageableItem {
+public class TreeTool extends SimpleSlimefunItem<ItemUseHandler> implements NotPlaceable, DamageableItem {
 
     private final int chance;
     private final SlimefunItemStack output;
 
-    public TreeTap(Category category, SlimefunItemStack item, int chance, SlimefunItemStack output, ItemStack[] recipe) {
+    public TreeTool(Category category, SlimefunItemStack item, int chance, SlimefunItemStack output, ItemStack[] recipe) {
         super(category, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
 
         this.chance = chance;
@@ -57,7 +57,7 @@ public class TreeTap extends SimpleSlimefunItem<ItemUseHandler> implements NotPl
     }
 
     private boolean isLog(Block b) {
-        return b != null && MaterialCollections.getAllLogs().contains(b.getType()) && !b.getType().name().startsWith("STRIPPED_") && !BlockStorage.hasBlockInfo(b.getLocation());
+        return b != null && Tag.LOGS.isTagged(b.getType()) && !b.getType().name().startsWith("STRIPPED_") && !BlockStorage.hasBlockInfo(b.getLocation());
     }
 
     @Override
