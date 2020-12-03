@@ -20,6 +20,7 @@ import com.google.gson.JsonParser;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -52,10 +53,17 @@ public class MagicalMirror extends SimpleSlimefunItem<ItemUseHandler> implements
         Optional<Location> location = getLocation(item);
 
         if (location.isPresent()) {
-            if (p.getInventory().removeItem(new ItemStack(Material.ENDER_PEARL)).isEmpty() && p.teleport(location.get())) {
-                p.sendTitle(item.getItemMeta().getDisplayName(), ChatColor.GRAY + "- Magical Mirror -", 20, 60, 20);
+            if (p.getInventory().removeItem(new ItemStack(Material.ENDER_PEARL)).isEmpty()) {
+                PaperLib.teleportAsync(p, location.get()).thenAccept(hasTeleported -> {
+                    if (hasTeleported.booleanValue()) {
+                        p.sendTitle(item.getItemMeta().getDisplayName(), ChatColor.GRAY + "- Magical Mirror -", 20, 60, 20);
+                    } else {
+                        p.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
+                        p.sendMessage(ChatColor.RED + "Teleportation was cancelled!");
+                    }
+                });
             } else {
-                p.sendMessage(ChatColor.RED + "Something went wrong!");
+                p.sendMessage(ChatColor.RED + "You need at least one Ender Pearl to teleport!");
             }
         } else {
             p.sendMessage(ChatColor.RED + "This Magical Mirror does not seem to have a valid destination!");
