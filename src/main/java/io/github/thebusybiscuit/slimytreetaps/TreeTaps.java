@@ -15,6 +15,7 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -47,11 +48,16 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		SlimefunItemStack stickyResin = new SlimefunItemStack("STICKY_RESIN", Material.BROWN_DYE, "&6Sticky Resin", "", "&7Can be turned into Rubber");
 		SlimefunItemStack rubber = new SlimefunItemStack("RUBBER", Material.FIREWORK_STAR, "&eRubber", "", "&7An alternative source of plastic");
 		SlimefunItemStack rawPlastic = new SlimefunItemStack("RAW_PLASTIC", Material.PAPER, "&rRaw Plastic");
+		
 		SlimefunItemStack rubberFactory = new SlimefunItemStack("RUBBER_FACTORY", Material.SMOKER, "&bRubber Factory", "", LoreBuilder.machine(MachineTier.ADVANCED, MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &712 J/s");
 		SlimefunItemStack resinExtractor = new SlimefunItemStack("RESIN_EXTRACTOR", Material.SMITHING_TABLE, "&cResin Extractor", "", LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE), "&8\u21E8 &7Speed: 1x", "&8\u21E8 &e\u26A1 &732 J/s");
 		SlimefunItemStack resinExtractor2 = new SlimefunItemStack("RESIN_EXTRACTOR_2", Material.SMITHING_TABLE, "&cResin Extractor &7(&eII&7)", "", LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE), "&8\u21E8 &7Speed: 2x", "&8\u21E8 &e\u26A1 &756 J/s");
+		
 		SlimefunItemStack amber = new SlimefunItemStack("AMBER", "ac7f7b72fc3e733828fcccc0ca8278aca2633aa33a231c93a682d14ac54aa0c4", "&6Amber", "", "&eA hardened gem acquired from Resin");
 		SlimefunItemStack amberBlock = new SlimefunItemStack("AMBER_BLOCK", SlimefunPlugin.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_16) ? Material.SHROOMLIGHT: Material.GLOWSTONE, "&6Block of Amber");
+        
+		SlimefunItemStack blueEnderPearl = new SlimefunItemStack("BLUE_ENDER_PEARL", "38be8abd66d09a58ce12d377544d726d25cad7e979e8c2481866be94d3b32f", "&9Blue Ender Pearl", "", "&7This item can be used to", "&7craft Magical Mirrors");
+		SlimefunItemStack magicalMirror = new SlimefunItemStack("MAGICAL_MIRROR", Material.BLUE_STAINED_GLASS_PANE, "&9Magical Mirror &7(Unbound)", "", "&eRight Click &7to bind this Mirror", "&7to your current location.", "", "&7Place a bound mirror into an", "&7Item Frame and then click on", "&7that Item Frame to teleport.", "&7Teleports cost &b1 Ender Pearl");
         
 		Category category = new Category(new NamespacedKey(this, "tree_taps"), new CustomItem(treeTap, "&6Slimy TreeTaps", "", "&a> Click to open"));
 		RecipeType rubberFactoryType = new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory);
@@ -210,6 +216,21 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
                 amber, amber, amber,
                 amber, amber, amber
         }).register(this);
+        
+        new UnplaceableBlock(category, blueEnderPearl, RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[] {
+                new ItemStack(Material.LAPIS_BLOCK), amberBlock, new ItemStack(Material.LAPIS_BLOCK),
+                amberBlock, new ItemStack(Material.ENDER_PEARL), amberBlock,
+                new ItemStack(Material.LAPIS_BLOCK), amberBlock, new ItemStack(Material.LAPIS_BLOCK)
+        }).register(this);
+        
+        MagicalMirror mirror = new MagicalMirror(this, category, magicalMirror, RecipeType.ENHANCED_CRAFTING_TABLE,
+        new ItemStack[] {
+                new ItemStack(Material.GLASS), amber, new ItemStack(Material.GLASS),
+                amber, blueEnderPearl, amber,
+                new ItemStack(Material.GLASS), amber, new ItemStack(Material.GLASS)
+        });
+        mirror.register(this);
 
         Research treeTapsResearch = new Research(new NamespacedKey(this, "tree_taps"), 6789, "Tree Taps", 15);
 		treeTapsResearch.addItems(treeTap, reinforcedTreeTap, diamondTreeTap, stickyResin, rubber, rawPlastic);
@@ -222,6 +243,12 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
         Research amberResearch = new Research(new NamespacedKey(this, "amber"), 6791, "Amber", 20);
         amberResearch.addItems(treeScraper, amber, amberBlock);
         amberResearch.register();
+
+        Research magicalMirrorResearch = new Research(new NamespacedKey(this, "magical_mirror"), 6792, "Magical Mirror", 30);
+        magicalMirrorResearch.addItems(blueEnderPearl, magicalMirror);
+        magicalMirrorResearch.register();
+        
+        new MagicalMirrorListener(this, mirror);
 	}
 
 	private String[] getLore(String item, int chance) {
