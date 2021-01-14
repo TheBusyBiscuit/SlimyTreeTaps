@@ -192,7 +192,7 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		new SlimefunItem(category, rawPlastic, rubberFactoryType,
 		new ItemStack[] {
 				null, null, null,
-				null, new CustomItem(rubber, 2), null,
+				null, new SlimefunItemStack(rubber, 2), null,
 				null, null, null
 		}).register(this);
 
@@ -203,9 +203,9 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 				null, null, null
 		}).register(this);
 
-        new SlimefunItem(category, amber, RecipeType.HEATED_PRESSURE_CHAMBER,
+        new SlimefunItem(category, amber, RecipeType.SMELTERY,
         new ItemStack[] {
-                new CustomItem(stickyResin, 4), null, null,
+                new SlimefunItemStack(stickyResin, 4), null, null,
                 null, null, null,
                 null, null, null
         }).register(this);
