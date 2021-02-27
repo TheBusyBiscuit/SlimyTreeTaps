@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.thebusybiscuit</groupId>
     <artifactId>SlimyTreeTaps</artifactId>
-    <version>1.0.0</version>
+    <version>UNOFFICIAL</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -66,7 +66,7 @@
                     <!-- Shade dependencies into the output jar -->
                     <relocations>
                         <relocation>
-                            <pattern>org.bstats.bukkit</pattern>
+                            <pattern>org.bstats</pattern>
                             <shadedPattern>io.github.thebusybiscuit.slimytreetaps.bstats</shadedPattern>
                         </relocation>
                     </relocations>
@@ -98,40 +98,19 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.TheBusyBiscuit</groupId>
-            <artifactId>CS-CoreLib</artifactId>
-            <version>6e17183656</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.github.thebusybiscuit</groupId>
-                    <artifactId>cscorelib2</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.bstats</groupId>
-                    <artifactId>bstats-bukkit</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>com.github.Slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-19</version>
+            <version>RC-20</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>io.github.thebusybiscuit</groupId>
                     <artifactId>cscorelib2</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.bstats</groupId>
-                    <artifactId>bstats-bukkit</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -139,7 +118,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.8</version>
+            <version>2.2.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
