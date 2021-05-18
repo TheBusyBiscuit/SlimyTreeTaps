@@ -6,8 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.Slimefun.api.Slimefun;
-
 public class MagicalMirrorListener implements Listener {
 
     private final MagicalMirror mirror;
@@ -26,7 +24,7 @@ public class MagicalMirrorListener implements Listener {
             if (mirror.isItem(item)) {
                 e.setCancelled(true);
 
-                if (Slimefun.hasUnlocked(e.getPlayer(), mirror, true)) {
+                if (mirror.canUse(e.getPlayer(), true)) {
                     mirror.teleport(e.getPlayer(), item);
                 }
             }
