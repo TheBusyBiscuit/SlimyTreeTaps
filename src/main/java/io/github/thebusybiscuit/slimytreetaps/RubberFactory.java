@@ -17,7 +17,7 @@ public abstract class RubberFactory extends AContainer implements RecipeDisplayI
 
     @Override
     public String getInventoryTitle() {
-        return "Rubber Factory";
+        return getItemName();
     }
 
     @Override
@@ -27,7 +27,7 @@ public abstract class RubberFactory extends AContainer implements RecipeDisplayI
 
     @Override
     public String getMachineIdentifier() {
-        return "RUBBER_FACTORY";
+        return getId();
     }
 
     @Override

@@ -47,7 +47,7 @@ public class TreeTool extends SimpleSlimefunItem<ItemUseHandler> implements NotP
                         b.setType(Material.valueOf("STRIPPED_" + b.getType().name()));
 
                         Location l = b.getRelative(e.getClickedFace()).getLocation().add(0.5, 0.5, 0.5);
-                        b.getWorld().dropItem(l, output.clone());
+                        b.getWorld().dropItem(l, output.clone().item());
                     }
 
                     damageItem(p, e.getItem());
