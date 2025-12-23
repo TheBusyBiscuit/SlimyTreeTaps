@@ -17,7 +17,7 @@ public abstract class ResinExtractor extends AContainer implements RecipeDisplay
 
     @Override
     public String getInventoryTitle() {
-        return "Resin Extractor";
+        return getItemName();
     }
 
     @Override
@@ -27,7 +27,7 @@ public abstract class ResinExtractor extends AContainer implements RecipeDisplay
 
     @Override
     public String getMachineIdentifier() {
-        return "RESIN_EXTRACTOR";
+        return getId();
     }
 
 }
